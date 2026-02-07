@@ -4,8 +4,7 @@ Gui, -MaximizeBox
 Gui, Add, Text,, Связь через /report бота
 Gui, Add, Link, yp x+5 w100, <a href="https://t.me/AbsInfoBot">https://t.me/AbsInfoBot</a>
 Gui, Add, Text, yp x+5 w230 Right c660000 vServiceStatus, Подключение...
-Gui, Add, Text, xm, В чате ввести: /ном ник или /num nick
-Gui, Add, Text,, Можно вводить часть ника, например: /ном иванов
+Gui, Add, Text, xm, В чате ввести: /ном ник или /num nick. Можно ввести часть ника
 Gui, Add, Text,, Логи
 Gui, Add, Button, gGUIClearLog, Очистить
 Gui, Add, Edit, r20 w500 vLogViewGui ReadOnly +VScroll

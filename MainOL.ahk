@@ -11,8 +11,8 @@ SetBatchLines, -1
 
 global version := "v0.1"
 global configPath := "config.json"
-global urlTxtAddress := ""
-global url := "https://game-proxy-2jm4.onrender.com/external/find-number"
+global urlTxtAddress := "https://raw.githubusercontent.com/RavenVSS/AbsInfoBinder/main/url.txt"
+global url
 global httpRequestTimeout := 2000 ; Таймаут запроса
 global overlayOnDisplay := false ; Флаг - оверлей выведен на экран
 
@@ -21,7 +21,7 @@ global overlayOnDisplay := false ; Флаг - оверлей выведен на
 #include, %A_ScriptDir%\GUI.ahk
 #include, %A_ScriptDir%\JSON.ahk ;https://github.com/cocobelgica/AutoHotkey-JSON
 
-;url := LoadActualUrl()
+url := LoadActualUrl()
 
 global config := { "overlayPositionX": 10
     , "overlayPositionY": 400
@@ -78,6 +78,10 @@ GetNumbers(search) {
 }
 
 BuildTextList(jsonNumbers) {
+    if (jsonNumbers.Length() == 0) {
+        return "Ничего не найдено"
+    } 
+
     maxNickLen := 0
     maxNumLen := 0
 
@@ -151,15 +155,15 @@ return
     overlayOnDisplay := true
 return
 
-f1::
-finalText := GetNumbers("nick")
-    finalText := finalText . "`nESC - закрыть"
-    OLShow(finalText
-    , config.overlayFontSize
-    , config.overlayPositionX
-    , config.overlayPositionY)
-    overlayOnDisplay := true
-return
+; f1::
+; finalText := GetNumbers("ник")
+;     finalText := finalText . "`nESC - закрыть"
+;     OLShow(finalText
+;     , config.overlayFontSize
+;     , config.overlayPositionX
+;     , config.overlayPositionY)
+;     overlayOnDisplay := true
+; return
 
 ;=== End Hotkeys ===
 ;=== Workaround ===

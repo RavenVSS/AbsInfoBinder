@@ -67,7 +67,7 @@ PadRight(str, totalLen)
 
 LoadActualUrl() {
     try {
-        response := HttpRequest(requestUrl)
+        response := HttpRequest(urlTxtAddress)
     } catch e {
         Log("Ошибка HTTP запроса: " . e.Message)
         MsgBox Ошибка запроса при получении URL сервиса
