@@ -4,10 +4,10 @@
 SetBatchLines, -1
 
 ;=== Init ===
-;@Ahk2Exe-SetName AbsInfoBot
+;@Ahk2Exe-SetName AbsInfoBinderRp
 ;@Ahk2Exe-SetProductVersion v0.1
 ;@Ahk2Exe-SetMainIcon icon.ico
-;@Ahk2Exe-ExeName AbsInfoBotRp.exe
+;@Ahk2Exe-ExeName AbsInfoBinderRp.exe
 
 global version = "v0.1"
 global url = "https://game-proxy-2jm4.onrender.com/external/find-number"

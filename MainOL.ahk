@@ -4,10 +4,10 @@
 SetBatchLines, -1
 
 ;=== Init ===
-;@Ahk2Exe-SetName AbsInfoBot
+;@Ahk2Exe-SetName AbsInfoBinderOL
 ;@Ahk2Exe-SetProductVersion v0.1
 ;@Ahk2Exe-SetMainIcon icon.ico
-;@Ahk2Exe-ExeName AbsInfoBotOL.exe
+;@Ahk2Exe-ExeName AbsInfoBinderOL.exe
 
 global version := "v0.1"
 global configPath := "config.json"
