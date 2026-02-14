@@ -25,8 +25,8 @@
 ## Настройки config.json
 ```json
 { 
-	"overlayPositionX": 10, // Позиция по высоте от левого верхнего угла в пикселях
-	"overlayPositionY": 400, // Позиция по ширине от левого верхнего угла в пикселях
+	"overlayPositionX": 10, // Позиция X от левого верхнего угла в пикселях
+	"overlayPositionY": 400, // Позиция Y от левого верхнего угла в пикселях
 	"overlayFontSize": 20, // Размер шрифта
 	"maxNumbers": 8, // Максимальное количество номеров для вывода
 	"createLogFile": false // Вывод логов в файл
@@ -37,3 +37,5 @@
 - https://github.com/cocobelgica/AutoHotkey-JSON
 
 - https://gist.github.com/rasoulcpu/50030f6fbbac44e24f1d62875dd7d66d
+
+
