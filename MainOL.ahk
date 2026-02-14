@@ -5,11 +5,11 @@ SetBatchLines, -1
 
 ;=== Init ===
 ;@Ahk2Exe-SetName AbsInfoBinderOL
-;@Ahk2Exe-SetProductVersion v0.1
+;@Ahk2Exe-SetProductVersion v0.2
 ;@Ahk2Exe-SetMainIcon icon.ico
 ;@Ahk2Exe-ExeName AbsInfoBinderOL.exe
 
-global version := "v0.1"
+global version := "v0.2"
 global configPath := "config.json"
 global urlTxtAddress := "https://raw.githubusercontent.com/RavenVSS/AbsInfoBinder/main/url.txt"
 global url
@@ -146,7 +146,16 @@ return
     SwitchToRussianKeyboard()
     sendinput, ^a{backspace}{esc}
     sleep 100
-    finalText := GetNumbers(search)
+
+    if (!search) 
+        search := Clipboard
+
+    if (StrLen(search) > 50) {
+        finalText := "Ник более 50 символов"
+    } else {
+        finalText := GetNumbers(search)
+    }
+    
     finalText := finalText . "`nESC - закрыть"
     OLShow(finalText
     , config.overlayFontSize
