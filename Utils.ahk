@@ -85,3 +85,67 @@ LoadActualUrl() {
 
     return text
 }
+
+CheckActiveWindowGta() {
+    WinGet, process, ProcessName, A
+    if (process == "gta_sa.exe") 
+        return True
+    return False
+}
+
+GetCurrentNickname() {
+    configAbsPath := A_AppData "\SAMPLauncher\AbsLauncherServerNicks.ini"
+
+    nickname := 0
+    FileRead, configAbsFileText, %configAbsPath%
+    if not ErrorLevel
+    {
+        if RegExMatch(configAbsFileText, "185\.71\.66\.21%3A7771=(\S+)", match)
+        {
+            nickname := ConvertNickname(match1)
+            Log("Текущий никнейм: " . nickname)
+            return nickname
+        }
+    }
+    Log("Не удалось получить никнейм")
+    return nickname
+}
+
+ConvertNickname(text) {
+    result := RegExReplace(text, "\\x([0-9A-Fa-f]{1,4})", "$hexChar")
+    result := text
+    pos := 1
+    While, pos := RegExMatch(result, "\\x([0-9A-Fa-f]{1,4})", match, pos)
+    {
+        code := "0x" . match1
+        char := Chr(code)
+        result := StrReplace(result, match, char)
+    }
+
+    return result
+}
+
+GetNewVersion() {
+    try {
+        response := HttpRequest("https://api.github.com/repos/RavenVSS/AbsInfoBinder/releases/latest")
+    } catch e {
+        Log("Ошибка HTTP запроса при получении версии: " . e.Message)
+        return
+    }
+
+    status := response.Status
+    body := response.ResponseBody
+    text := Utf8ToString(body)
+
+    if (status != 200) {
+        Log("Ошибка запроса при получении версии. Статус: " . status)
+        return
+    }
+
+    repo := JSON.Load(text)
+
+    if (repo.tag_name != version)
+        return repo.tag_name
+
+    return
+}

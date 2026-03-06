@@ -5,9 +5,12 @@ Gui, Add, Text,, Связь через /report бота
 Gui, Add, Link, yp x+5 w100, <a href="https://t.me/AbsInfoBot">https://t.me/AbsInfoBot</a>
 Gui, Add, Text, yp x+5 w230 Right c660000 vServiceStatus, Подключение...
 Gui, Add, Text, xm, В чате ввести: /ном ник или /num nick. Можно ввести часть ника
+Gui, Add, Checkbox, vGUIChatlogMonitoringEnabled gGUIChatlogMonitoringChanged, Мониторинг чата
 Gui, Add, Text,, Логи
 Gui, Add, Button, gGUIClearLog, Очистить
 Gui, Add, Edit, r20 w500 vLogViewGui ReadOnly +VScroll
+Gui, Add, Link,, <a href="https://github.com/RavenVSS/AbsInfoBinder">GitHub</a>
+Gui, Add, Link, yp x+10 Hidden w230 vUpdateStatus,
 Gui, Show,, @AbsInfoBot %version%
 
 
@@ -26,6 +29,29 @@ GUISetServiceStatus(available) {
         GuiControl,, ServiceStatus, Подключение...
     }
     
+}
+
+GUIChatlogMonitoringChanged() {
+    GuiControlGet, state,, GUIChatlogMonitoringEnabled
+    if (state) {
+        config.chatlogMonitoring := true
+        UpdateConfig()
+        Log("Мониторинг чата включен")
+    }
+    else {
+        config.chatlogMonitoring := false
+        UpdateConfig()
+        Log("Мониторинг чата выключен")
+    }
+}
+
+GUISetChatlogMonitoring(enabled) {
+    GuiControl,, GUIChatlogMonitoringEnabled, %enabled%
+}
+
+GUISetUpdateStatus(newVersion) {
+    GuiControl,, UpdateStatus, <a href="https://github.com/RavenVSS/AbsInfoBinder/releases">Доступно обновление %newVersion%</a>
+    GuiControl, Show, UpdateStatus
 }
 
 GUIClearLog() {
