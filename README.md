@@ -1,6 +1,13 @@
 ﻿# AbsInfoBot биндер для SAMP
-Приложение позволяет выводить на экран номера телефонов игроков сервера Absolute RP Platinum и не только.  
+Биндер позволяет выводить на экран информацию по серверу Absolute RP Platinum.  
+
+Функции биндера:
+- поиск номеров
+- просмотр истории ников
+- мониторинг чата: при свёрнутой игре, уведомляет если вас упомянули или написали СМС  
+
 ✅ Совместимо с античитом, приложение работает поверх игры, без внедрения в работу SAMP.  
+
 По всем вопросам писать в телеграмм бота [https://t.me/AbsInfoBot](https://t.me/AbsInfoBot) команда `/report`  
 ![Пример](images/example.png)
 ## Команды и возможности
@@ -28,13 +35,15 @@
 Если ников будет слишком много, часть ников заменится на `...`
 #### Мониторинг чата
 ⚠️Работает только с оригинальным лаунчером Absolute!  
-Приложение мониторит чат когда игра свёрнута, если ваш никнейм появится в чате - появится уведомление Windows.  
+
+Биндер мониторит чат когда игра свёрнута, если ваш никнейм появится в чате или вам напишут СМС - появится уведомление Windows.  
+
 Мониторинг можно отключить, убрав галочку "Мониторинг чата".  
 ![Мониторинг чата](images/chat_monitoring.png)
 
 ## Как установить
 
- 1. Скачать из [Releases](https://github.com/RavenVSS/AbsInfoBinder/releases) AbsInfoBinder.exe, WinOverlay.dll и поместить в одну папку
+ 1. Скачать из [Releases](https://github.com/RavenVSS/AbsInfoBinder/releases) AbsInfoBinder.exe
  2. Запустить AbsInfoBinder.exe
  3. (если ошибка с dll) Установить [Visual C++ v14 x86](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-supported-redistributable-version)
 
@@ -46,7 +55,7 @@
 	"overlayPositionY": 400, // Позиция Y от левого верхнего угла в пикселях
 	"overlayFontSize": 20, // Размер шрифта
 	"maxNumbers": 8, // Максимальное количество номеров для вывода
-	"createLogFile": false, // Вывод логов в файл
+	"createLogFile": true, // Вывод логов в файл
 	"chatlogMonitoring": false // Мониторинг чата
 }
 ```

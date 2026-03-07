@@ -8,10 +8,11 @@ Gui, Add, Text, xm, В чате ввести: /ном ник или /num nick. �
 Gui, Add, Checkbox, vGUIChatlogMonitoringEnabled gGUIChatlogMonitoringChanged, Мониторинг чата
 Gui, Add, Text,, Логи
 Gui, Add, Button, gGUIClearLog, Очистить
-Gui, Add, Edit, r20 w500 vLogViewGui ReadOnly +VScroll
+Gui, Add, Button, yp x+10 gGUIOpenConfigFolder, Папка с конфигом
+Gui, Add, Edit, xm r20 w500 vLogViewGui ReadOnly +VScroll
 Gui, Add, Link,, <a href="https://github.com/RavenVSS/AbsInfoBinder">GitHub</a>
 Gui, Add, Link, yp x+10 Hidden w230 vUpdateStatus,
-Gui, Show,, @AbsInfoBot %version%
+Gui, Show,, AbsInfoBinder %version%
 
 
 GUILog(text) {
@@ -52,6 +53,10 @@ GUISetChatlogMonitoring(enabled) {
 GUISetUpdateStatus(newVersion) {
     GuiControl,, UpdateStatus, <a href="https://github.com/RavenVSS/AbsInfoBinder/releases">Доступно обновление %newVersion%</a>
     GuiControl, Show, UpdateStatus
+}
+
+GUIOpenConfigFolder() {
+    Run, %configDir%
 }
 
 GUIClearLog() {

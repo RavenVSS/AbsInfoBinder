@@ -5,12 +5,14 @@ SetBatchLines, -1
 
 ;=== Init ===
 ;@Ahk2Exe-SetName AbsInfoBinder
-;@Ahk2Exe-SetProductVersion v0.3
+;@Ahk2Exe-SetProductVersion v0.4
 ;@Ahk2Exe-SetMainIcon icon.ico
 ;@Ahk2Exe-ExeName AbsInfoBinder.exe
 
-global version := "v0.3"
-global configPath := "config.json"
+global version := "v0.4"
+global configDir := A_AppData "\AbsInfoBinder"
+global configPath := configDir "\config.json"
+global logPath := configDir . "\AbsInfoBinder.log"
 global urlTxtAddress := "https://raw.githubusercontent.com/RavenVSS/AbsInfoBinder/main/url.txt"
 global url
 global httpRequestTimeout := 2000 ; Таймаут запроса
@@ -26,6 +28,9 @@ global chatlogOldFileSize := 0
 global currentNickname := 0 ; Текуший ник на сервере Platinum
 global currentNicknamePattern := 0
 
+; == Init config folder ===
+if !FileExist(configDir)
+    FileCreateDir, %configDir%
 
 #include, %A_ScriptDir%\Utils.ahk
 #include, %A_ScriptDir%\Overlay.ahk
@@ -36,7 +41,7 @@ global config := { "overlayPositionX": 10
     , "overlayPositionY": 400
     , "overlayFontSize": 20
     , "maxNumbers": 8
-    , "createLogFile": false
+    , "createLogFile": true
     , "chatlogMonitoring": false}
 
 Init()
@@ -51,11 +56,7 @@ setTimer, CheckOverlay, 1000
 ;=== Main ===
 
 Init() {
-    url := LoadActualUrl()
-    currentNickname := GetCurrentNickname()
-    currentNicknamePattern := StrReplace(currentNickname, "_", " ")
-    currentNicknamePattern := StrReplace(currentNicknamePattern, " ", "[_ ]")
-    currentNicknamePattern := "^\[.+\] (.*" . currentNicknamePattern . ".*)$"
+    FileDelete, %logPath%
 
     if (FileExist(configPath)) {
         file := FileOpen(configPath, "r")
@@ -72,6 +73,12 @@ Init() {
     }
 
     UpdateConfig()
+
+    url := LoadActualUrl()
+    currentNickname := GetCurrentNickname()
+    currentNicknamePattern := StrReplace(currentNickname, "_", " ")
+    currentNicknamePattern := StrReplace(currentNicknamePattern, " ", "[_ ]")
+    currentNicknamePattern := "^\[.+\] (.*" . currentNicknamePattern . ".*)$"
 
     newVersion := GetNewVersion()
     if (newVersion) {
@@ -237,6 +244,8 @@ ProcessChatLogLine(chatlogLine) {
 
     if RegExMatch(chatlogLine, "i)" . currentNicknamePattern, match) {
         TrayTip, Вас упомянули, %match1%, 5, 1
+    } else if (RegExMatch(chatlogLine, "{00FF00}СМС{FF6600} от (.*)$", match)) {
+        TrayTip, Вам написали в СМС, %match1%, 5, 1
     }
 }
 
@@ -398,15 +407,22 @@ return
     overlayOnDisplay := true
 return
 
-; f1::
-; finalText := GetNumbers("ник")
-;     finalText := finalText . "`nESC - закрыть"
-;     OLShow(finalText
-;     , config.overlayFontSize
-;     , config.overlayPositionX
-;     , config.overlayPositionY)
-;     overlayOnDisplay := true
-; return
+:?b0:/hlp::
+:?b0:.hlp::
+    if (!CheckActiveWindowGta())
+        return
+    sendinput, ^a{backspace}{esc}
+    finalText := "/ном Ник - Поиск номеров"
+    finalText := finalText . "`n/ник Ник - История ников"
+    finalText := finalText . "`n/hlp - Список команд"
+    finalText := finalText . "`nESC - закрыть"
+    overlayText := finalText
+    OLShow(finalText
+    , config.overlayFontSize
+    , config.overlayPositionX
+    , config.overlayPositionY)
+    overlayOnDisplay := true
+return
 
 ;=== End Hotkeys ===
 ;=== Workaround ===

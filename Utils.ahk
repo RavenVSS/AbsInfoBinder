@@ -16,7 +16,7 @@ Log(text) {
     GUILog(text)
     if (config.createLogFile) {
         FormatTime, time,, yyyy-MM-dd HH:mm:ss
-        FileAppend, [%time%] %text%`n, AbsInfoBot.log
+        FileAppend, [%time%] %text%`n, %logPath%
     }
 }
 

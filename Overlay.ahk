@@ -1,4 +1,6 @@
-﻿global pathObverlay := "WinOverlay.dll"
+﻿global pathObverlay := configDir . "\WinOverlay.dll"
+
+FileInstall, WinOverlay.dll, %pathObverlay%, 1
 
 if (!FileExist(pathObverlay))
 {
