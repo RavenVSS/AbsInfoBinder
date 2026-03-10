@@ -93,36 +93,49 @@ CheckActiveWindowGta() {
     return False
 }
 
-GetCurrentNickname() {
-    configAbsPath := A_AppData "\SAMPLauncher\AbsLauncherServerNicks.ini"
-
-    nickname := 0
-    FileRead, configAbsFileText, %configAbsPath%
-    if not ErrorLevel
-    {
-        if RegExMatch(configAbsFileText, "185\.71\.66\.21%3A7771=(\S+)", match)
-        {
-            nickname := ConvertNickname(match1)
-            Log("Текущий никнейм: " . nickname)
-            return nickname
-        }
+GetNicknameList() {
+    filePath := A_AppData "\SAMPLauncher\SavedNames.txt"
+    nicknameList := []
+    
+    fileHandle := FileOpen(filePath, "r", "UTF-8")
+    if !fileHandle {
+        Log("Не удалось открыть файл с никами")
+        return nicknameList
     }
-    Log("Не удалось получить никнейм")
-    return nickname
+    
+    while !fileHandle.AtEOF {
+        line := Trim(fileHandle.ReadLine(), " `t`r`n")
+        if (line != "")
+            nicknameList.Push(line)
+        Log("Найден никнейм: " . line)
+    }
+    
+    fileHandle.Close()
+
+    if (nicknameList.MaxIndex() == 0 || nicknameList.MaxIndex() = "")
+        Log("Никнеймы не найдены")
+
+    return nicknameList
 }
 
-ConvertNickname(text) {
-    result := RegExReplace(text, "\\x([0-9A-Fa-f]{1,4})", "$hexChar")
-    result := text
-    pos := 1
-    While, pos := RegExMatch(result, "\\x([0-9A-Fa-f]{1,4})", match, pos)
-    {
-        code := "0x" . match1
-        char := Chr(code)
-        result := StrReplace(result, match, char)
-    }
+BuildNicknamePattern(nicknameList) {
+    if (!nicknameList || nicknameList.MaxIndex() = 0 || nicknameList.MaxIndex() = "")
+        return 0
 
-    return result
+    fullPattern := "^\[.+\] (.*(?:"
+    
+    for index, currentNickname in nicknameList
+    {
+        if (index != 1)
+            fullPattern .= "|"
+
+        nicknamePattern := StrReplace(currentNickname, "_", " ")
+        nicknamePattern := StrReplace(nicknamePattern, " ", "[_ ]")
+        
+        fullPattern .= nicknamePattern
+    }
+    
+    return fullPattern . ").*)$"
 }
 
 GetNewVersion() {

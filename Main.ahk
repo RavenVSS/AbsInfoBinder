@@ -5,11 +5,11 @@ SetBatchLines, -1
 
 ;=== Init ===
 ;@Ahk2Exe-SetName AbsInfoBinder
-;@Ahk2Exe-SetProductVersion v0.4
+;@Ahk2Exe-SetProductVersion v0.5
 ;@Ahk2Exe-SetMainIcon icon.ico
 ;@Ahk2Exe-ExeName AbsInfoBinder.exe
 
-global version := "v0.4"
+global version := "v0.5"
 global configDir := A_AppData "\AbsInfoBinder"
 global configPath := configDir "\config.json"
 global logPath := configDir . "\AbsInfoBinder.log"
@@ -25,8 +25,8 @@ global chatlogPath := UserProfile . "\Documents\GTA San Andreas User Files\SAMP\
 global chatlogFile := 0
 global chatlogOldFileSize := 0
 
-global currentNickname := 0 ; Текуший ник на сервере Platinum
-global currentNicknamePattern := 0
+global nicknameList := 0 ; Список никнеймов
+global nicknamePattern := 0
 
 ; == Init config folder ===
 if !FileExist(configDir)
@@ -75,10 +75,9 @@ Init() {
     UpdateConfig()
 
     url := LoadActualUrl()
-    currentNickname := GetCurrentNickname()
-    currentNicknamePattern := StrReplace(currentNickname, "_", " ")
-    currentNicknamePattern := StrReplace(currentNicknamePattern, " ", "[_ ]")
-    currentNicknamePattern := "^\[.+\] (.*" . currentNicknamePattern . ".*)$"
+
+    nicknameList := GetNicknameList()
+    nicknamePattern := BuildNicknamePattern(nicknameList)
 
     newVersion := GetNewVersion()
     if (newVersion) {
@@ -239,10 +238,10 @@ GetNicknameHistory(search) {
 }
 
 ProcessChatLogLine(chatlogLine) {
-    if (!currentNickname)
+    if (!nicknameList || nicknameList.MaxIndex() = 0 || nicknameList.MaxIndex() = "")
         return
 
-    if RegExMatch(chatlogLine, "i)" . currentNicknamePattern, match) {
+    if RegExMatch(chatlogLine, "i)" . nicknamePattern, match) {
         TrayTip, Вас упомянули, %match1%, 5, 1
     } else if (RegExMatch(chatlogLine, "{00FF00}СМС{FF6600} от (.*)$", match)) {
         TrayTip, Вам написали в СМС, %match1%, 5, 1
