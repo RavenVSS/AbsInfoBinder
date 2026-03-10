@@ -242,8 +242,10 @@ ProcessChatLogLine(chatlogLine) {
         return
 
     if RegExMatch(chatlogLine, "i)" . nicknamePattern, match) {
+        Log("Вас упомянули")
         TrayTip, Вас упомянули, %match1%, 5, 1
     } else if (RegExMatch(chatlogLine, "{00FF00}СМС{FF6600} от (.*)$", match)) {
+        Log("Вам написали в СМС")
         TrayTip, Вам написали в СМС, %match1%, 5, 1
     }
 }
@@ -315,6 +317,7 @@ CheckChatlog() {
         {
             Log("Файл логов SAMP не найден!")
             config.chatlogMonitoring := false
+            return
         } else {
             chatlogFile := FileOpen(chatlogPath, "r", "CP1251")
             chatlogFile.Seek(0, 2)
@@ -323,6 +326,13 @@ CheckChatlog() {
     }
 
     logFileSize := chatlogFile.Length()
+
+    if (logFileSize < chatlogOldFileSize)
+    {
+        chatlogFile.Seek(0)
+        chatlogOldFileSize := 0
+    }
+
     if (logFileSize > chatlogOldFileSize)
     {
         Loop
