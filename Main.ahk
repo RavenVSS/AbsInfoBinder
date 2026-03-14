@@ -5,11 +5,11 @@ SetBatchLines, -1
 
 ;=== Init ===
 ;@Ahk2Exe-SetName AbsInfoBinder
-;@Ahk2Exe-SetProductVersion v0.5
+;@Ahk2Exe-SetProductVersion v0.6
 ;@Ahk2Exe-SetMainIcon icon.ico
 ;@Ahk2Exe-ExeName AbsInfoBinder.exe
 
-global version := "v0.5"
+global version := "v0.6"
 global configDir := A_AppData "\AbsInfoBinder"
 global configPath := configDir "\config.json"
 global logPath := configDir . "\AbsInfoBinder.log"
@@ -193,12 +193,15 @@ GetNicknameHistory(search) {
         return "Ошибка запроса"
     }
 
-    RegExMatch(html, "Информация об аккаунте\s+(\S+)\s+номер\s+(\d+)", match)
+    RegExMatch(html, "Информация об аккаунте\s(\S*)\s?номер\s+(\d+)", match)
     nickname := match1
     accountId := match2
 
-    if (!nickname)
+    if (!accountId)
         return "Не найдено`nНик должен полностью совпадать,`nв том числе большие буквы!"
+
+    if (!nickname)
+        nickname := "Не указан"
 
     result := "Ник: " . nickname . " Аккаунт: " . accountId
     pos := 1
